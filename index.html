@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#e5ebee" />
+  <title>동네픽 — 살고 싶은 나의 동네를 고르는 방법</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <link rel="stylesheet" href="./style.css?v=11">
+</head>
+<body>
+
+
+  <video class="video-bg" autoplay loop muted playsinline>
+    <source src="./assets/city-bg.mp4" type="video/mp4">
+  </video>
+
+  <div class="page">
+    <nav class="navbar liquid-glass">
+      <div class="logo">동네픽<small>살고 싶은 나의 동네를 고르는 방법</small></div>
+      <div class="nav-center"><span>생활환경</span><span>주거</span><span>상권</span><span>교육</span></div>
+      <button class="nav-right" id="aboutBtn">ABOUT DATA</button>
+    </nav>
+
+    <div class="workspace">
+      <aside class="sidebar liquid-glass">
+        <div class="sidebar-scroll">
+        <div class="kicker">Find your district</div>
+        <h1 class="heading" id="animatedHeading"></h1>
+        <p class="sub" id="subText">원하는 동네의 성향을 고르면<br>서울 25개 자치구 중 잘 맞는 곳을 찾아드려요.</p>
+
+        <div class="separator"></div>
+
+        <div class="section-title">
+          <strong>어떤 동네를 찾고 있나요?</strong>
+          <span>최대 3개 선택</span>
+        </div>
+
+        <div class="persona-grid" id="personaGrid">
+          <button class="persona" data-persona="cost">
+            <b>주거비 부담이 적은 곳</b>
+            <small>전세·월세 부담을 낮게</small>
+          </button>
+          <button class="persona" data-persona="space">
+            <b>넓은 집이 많은 곳</b>
+            <small>임대면적이 넉넉한 지역</small>
+          </button>
+          <button class="persona" data-persona="calm">
+            <b>조용하고 안정적인 곳</b>
+            <small>민원 적고 오래 유지되는 상권</small>
+          </button>
+          <button class="persona" data-persona="convenient">
+            <b>생활이 편리한 곳</b>
+            <small>주차·의료 인프라 중심</small>
+          </button>
+          <button class="persona" data-persona="family">
+            <b>아이 키우기 좋은 곳</b>
+            <small>교육·의료·생활환경 중심</small>
+          </button>
+          <button class="persona" data-persona="young">
+            <b>젊고 활기찬 곳</b>
+            <small>20·30대 비중과 변화형 상권</small>
+          </button>
+        </div>
+
+        <div class="selected-info" id="selectedInfo">성향을 선택해 주세요.</div>
+
+        <button class="advanced-toggle" id="advancedToggle">세부 조건 더 설정하기</button>
+
+        <div class="advanced" id="advanced">
+          <div class="advanced-card">
+
+            <div class="detail-section">
+              <div class="detail-section-title">주거 조건</div>
+
+              <div class="field">
+                <div class="field-label">계약 유형</div>
+                <div class="segmented" data-group="contract">
+                  <button class="seg-btn active" data-value="전체">전체</button>
+                  <button class="seg-btn" data-value="전세">전세</button>
+                  <button class="seg-btn" data-value="월세">월세</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="field-label">주택 유형</div>
+                <div class="segmented" data-group="housing">
+                  <button class="seg-btn active" data-value="전체">전체</button>
+                  <button class="seg-btn" data-value="아파트">아파트</button>
+                  <button class="seg-btn" data-value="오피스텔">오피스텔</button>
+                  <button class="seg-btn" data-value="연립다세대">연립·다세대</button>
+                  <button class="seg-btn" data-value="단독다가구">단독·다가구</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="field-label">예산 범위 · 선택사항</div>
+                <div class="budget-row">
+                  <div class="budget-box">
+                    <label>최대 보증금 (만원)</label>
+                    <input id="depositBudget" value="" placeholder="예: 30000" inputmode="numeric" />
+                  </div>
+                  <div class="budget-box" id="monthlyBudgetBox">
+                    <label>최대 월세 (만원)</label>
+                    <input id="monthlyBudget" value="" placeholder="예: 100" inputmode="numeric" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-section-title">생활 조건</div>
+              <div class="condition-grid">
+                <button class="condition-btn" data-detail="parking">주차가 편한 곳</button>
+                <button class="condition-btn" data-detail="medical">의료시설이 충분한 곳</button>
+                <button class="condition-btn" data-detail="low_complaint">생활민원이 적은 곳</button>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-section-title">동네 분위기</div>
+              <div class="condition-grid">
+                <button class="condition-btn" data-detail="young">젊은 사람이 많은 곳</button>
+                <button class="condition-btn" data-detail="commercial_stable">안정적인 상권</button>
+                <button class="condition-btn" data-detail="commercial_dynamic">변화가 활발한 상권</button>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <div class="detail-section-title">교육</div>
+              <div class="condition-grid">
+                <button class="condition-btn" data-detail="class_size">학급 규모가 작은 곳</button>
+                <button class="condition-btn" data-detail="teacher_ratio">교원 1인당 학생 수가 적은 곳</button>
+              </div>
+            </div>
+
+            <div class="detail-help">선택한 세부 조건은 추천 점수에 추가로 반영됩니다.</div>
+          </div>
+        </div>
+
+        <button class="recommend" id="recommendBtn">나에게 맞는 동네 추천</button>
+        <div class="note">대기질과 횡단보도·신호등 밀도는 참고정보이며 추천 점수에는 포함되지 않습니다.</div>
+      
+        </div>
+      </aside>
+
+      <main class="map-panel liquid-glass">
+        <div class="map-head">
+          <div class="small">Seoul district map</div>
+          <h2>서울특별시</h2>
+          <p>추천 후 강조된 자치구를 눌러 적합도를 확인하세요.</p>
+        </div>
+
+        <div class="legend">
+          <span><i></i>자치구</span>
+          <span class="on"><i></i>추천지역</span>
+        </div>
+
+        <div class="loading" id="loading">서울 자치구 지도를 불러오는 중...</div>
+        <svg id="mapSvg" aria-label="서울 25개 자치구 지도"></svg>
+
+        <section class="detail liquid-glass" id="detail">
+          <div class="detail-top">
+            <div>
+              <div class="detail-rank" id="detailRank">추천 전</div>
+              <h3 id="detailName">자치구를 선택해 주세요</h3>
+              <div class="detail-sub">나의 조건과의 상대 적합도</div>
+            </div>
+            <button class="close" id="closeBtn">×</button>
+          </div>
+
+          <div class="score"><span id="detailScore">—</span><small id="scoreUnit"></small></div>
+
+          <div class="reasons" id="reasons">
+            <div class="reason">성향을 선택한 뒤 ‘나에게 맞는 동네 추천’을 눌러주세요.</div>
+          </div>
+
+          <div class="metrics" id="metrics">
+            <div class="metric"><b>—</b><span>추천 실행 전</span></div>
+          </div>
+        </section>
+
+        <div class="bottom-bar liquid-glass">
+          <div class="bottom-left"><b id="bottomTitle">SEOUL</b><span id="bottomText">성향을 선택하고 추천을 눌러보세요.</span></div>
+          <div class="bottom-right">2026 주거·생활 데이터 기반</div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+
+  <div class="modal-backdrop" id="aboutModal">
+    <div class="modal liquid-glass">
+      <button class="modal-close" id="modalClose">×</button>
+      <div class="kicker">About data</div>
+      <div class="about-data-content">
+        <h2>동네픽 데이터 기준</h2>
+        <p class="about-intro">
+          동네픽은 서울 25개 자치구의 생활민원, 주거, 인구, 상권, 교육, 주차, 의료 데이터를 통합하고,
+          지표별 특성에 맞는 보정과 정규화를 거쳐 자치구별 상대점수를 산출합니다.
+          사용자의 성향과 주거 조건에 따라 지표별 가중치를 달리 적용해 최종 적합도를 계산합니다.
+        </p>
+
+        <section class="about-section">
+          <h3>어떻게 분석했나요?</h3>
+          <div class="about-grid">
+            <article class="about-card">
+              <h4>생활민원</h4>
+              <p>자치구별 인구 차이를 고려해 단순 민원 건수가 아닌 <strong>인구 1만 명당 생활민원 건수</strong>로 보정했습니다.</p>
+            </article>
+            <article class="about-card">
+              <h4>주거</h4>
+              <p>전월세 실거래 데이터는 일부 극단값의 영향을 줄이기 위해 <strong>평균 대신 중앙값</strong>을 사용했습니다. 계약 유형과 주택 유형별로 나누어 비교합니다.</p>
+            </article>
+            <article class="about-card">
+              <h4>주거 공간</h4>
+              <p>선택한 계약 유형과 주택 유형의 <strong>임대면적 중앙값</strong>을 활용해 상대적으로 넓은 주거공간이 많은 지역을 비교합니다.</p>
+            </article>
+            <article class="about-card">
+              <h4>인구</h4>
+              <p>전체 인구수보다 <strong>20·30대 인구 비율 등 연령대별 구성비</strong>를 활용해 지역의 인구 특성을 비교합니다.</p>
+            </article>
+            <article class="about-card">
+              <h4>상권</h4>
+              <p>평균 영업기간과 상권 변화 특성을 활용해 <strong>안정적인 상권과 변화가 활발한 상권</strong>을 구분합니다.</p>
+            </article>
+            <article class="about-card">
+              <h4>의료</h4>
+              <p>지역별 인구 차이를 고려해 <strong>인구 1만 명당 의료기관 수와 의사 수</strong>를 함께 반영합니다.</p>
+            </article>
+            <article class="about-card">
+              <h4>교육</h4>
+              <p><strong>학급당 학생 수와 교원 1인당 학생 수</strong>를 활용해 자치구별 교육환경을 비교합니다.</p>
+            </article>
+            <article class="about-card">
+              <h4>주차</h4>
+              <p><strong>주택가 주차장 확보율</strong>을 활용해 지역별 주차 여건을 비교합니다.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="about-section about-score">
+          <h3>추천 점수는 어떻게 계산되나요?</h3>
+          <p>
+            각 지표를 <strong>서울 25개 자치구 기준 0~100점</strong>으로 변환한 뒤,
+            사용자가 선택한 성향과 세부조건에 따라 가중치를 적용해 최종 적합도를 계산합니다.
+            예산을 입력한 경우에는 선택한 주택 유형과 계약 조건의 주거비 수준도 함께 반영합니다.
+          </p>
+        </section>
+
+        <section class="about-section about-note">
+          <h3>알아두세요</h3>
+          <p>
+            동네픽의 점수는 <strong>서울 25개 자치구 간 상대 비교를 위한 값</strong>이며,
+            절대적인 삶의 질이나 부동산 가치를 의미하지 않습니다.
+            실시간 대기질처럼 시점에 따라 크게 달라지는 데이터는 추천 점수에 포함하지 않고 참고정보로만 제공합니다.
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+<script src="./data.js?v=10"></script>
+<script src="./app.js?v=10"></script>
+</body>
+</html>
