@@ -4,7 +4,10 @@
 서울 25개 자치구의 민원·주거·인구·상권·의료·교육·주차 데이터를 통합하고,  
 사용자의 주거 조건과 생활 성향에 따라 **맞춤형 TOP3 지역을 추천**합니다.
 
-사이트 바로가기: https://su4228-prog.github.io/0914_001/
+🔗사이트 바로가기: https://su4228-prog.github.io/0914_001/
+📁 ppt 자료 다운로드 [동네픽_데이터분석_ppt.pdf](https://github.com/user-attachments/files/32237778/_._ppt.pdf)
+
+
 
 https://github.com/user-attachments/assets/16f29f6a-8336-40f0-bced-ef0a9ac96def
 
